@@ -1,0 +1,16 @@
+{
+  "name": "Hello Extensions",
+  "description" : "Base Level Extension",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "hello_extensions.png",
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 2,
+  "chrome_url_overrides" : {
+    "newtab": "hello.html"
+  },
+  "permissions": [
+    "storage"
+  ]
+}

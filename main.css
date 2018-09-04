@@ -1,0 +1,14 @@
+h1 {
+    color:red;
+}
+
+.item-container {
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+body {
+    background-image: url('image.jpg');
+    background-size: cover;
+}
