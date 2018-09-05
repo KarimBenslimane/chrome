@@ -12,3 +12,42 @@ body {
     background-image: url('image.jpg');
     background-size: cover;
 }
+
+#add {
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.circle {
+    cursor: pointer;
+    margin: 50px auto;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: dodgerblue;
+    position: relative;
+}
+.circle::after {
+    content: " ";
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    height: 10px;
+    margin-top: -5px;
+    top: 50%;
+    left: 5px;
+    right: 5px;
+    z-index: 9;
+}
+.circle::before {
+    content: " ";
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    width: 10px;
+    margin-left: -5px;
+    left: 50%;
+    top: 5px;
+    bottom: 5px;
+    z-index: 9;
+}

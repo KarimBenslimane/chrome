@@ -12,6 +12,8 @@
         <script src="jquery-3.3.1.slim.min.js"></script>
         <script src="popper.min.js"></script>
         <script src="bootstrap.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-database.js"></script>
         <script src="background.js"></script>
 
         <!-- Page title -->
@@ -20,29 +22,9 @@
 
     <body>
         <div class="container-fluid">
-            <div class="row">
-                <div class="col item-container">
-                    <div class="col col-title"><h3>One item</h3></div>
-                    <div class="col col-desc" contenteditable="true">
-                        This is the description of the item.
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-primary">Primary</button>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="col-title"><h3>One item</h3></div>
-                    <div class="col-desc" contenteditable="true">
-                        This is the description of the item.
-                    </div>
-                    <button type="button" class="btn btn-primary">Primary</button>
-                </div>
-                <div class="col">
-                    <div class="col-title"><h3>One item</h3></div>
-                    <div class="col-desc" contenteditable="true">
-                        This is the description of the item.
-                    </div>
-                    <button type="button" class="btn btn-primary">Primary</button>
+            <div id="base" class="row">
+                <div id="add" class="col">
+                    <div class="circle"></div>
                 </div>
             </div>
         </div>
