@@ -7,13 +7,29 @@ var config = {
     storageBucket: "new-tab-3250b.appspot.com",
     messagingSenderId: "130229537"
 };
+var ids = [];
 firebase.initializeApp(config);
 
 // write a post to Firebase
 function writeNewPost(title, message) {
-    firebase.database().ref('posts/' + title).set({
+    var newPostRef = firebase.database().ref('posts/').push();
+    var pid = newPostRef.getKey();
+    ids.push(pid);
+    newPostRef.set({
+        title: title,
         message: message
     });
+    return pid;
+}
+
+// update existing post in Firebase
+function updatePost(pid, title, message) {
+    firebase.database().ref('posts/' + pid).set(
+        {
+            title: title,
+            message: message
+        }
+    )
 }
 
 // event handler for buttons
@@ -29,16 +45,33 @@ function clickHandler(e) {
     if (titlecol.classList.contains("col-title")) {
         title = String(titlecol.querySelector("h3").innerHTML);
     }
-    writeNewPost(title, message);
+    var pidcol = titlecol.previousElementSibling;
+    if (pidcol.classList.contains("col-pid")) {
+        if (pidcol.getAttribute("pid")) {
+            updatePost(pidcol.getAttribute("pid"), title, message);
+        } else {
+            var pid = writeNewPost(title, message);
+            pidcol.setAttribute("pid", pid);
+        }
+    }
+
 }
 
 // creates a div to be added to the HTML DOM
-function addContainer(title, message) {
+function addContainer(title, message, pid = null) {
     var container = document.createElement("div");
     container.className = "col item-container";
 
+    var pidelement = document.createElement("div");
+    pidelement.className = "col col-pid";
+    if (pid) {
+        pidelement.setAttribute("pid", pid);
+    }
+    container.appendChild(pidelement);
+
     var titleelement = document.createElement("div");
     titleelement.className = "col col-title";
+    titleelement.contentEditable = "true";
     var h3 = document.createElement("h3");
     var h3text = document.createTextNode(title);
     h3.appendChild(h3text);
@@ -74,8 +107,8 @@ function refreshEventListeners() {
 // create a new container to HTML
 // move the plus sign
 // refresh listeners
-function newContainer(title, message) {
-    addContainer(title, message);
+function newContainer(title, message, pid = null) {
+    addContainer(title, message, pid);
     // move the PLUS SIGN
     var add = document.getElementById("add");
     document.getElementById("base").appendChild(add);
@@ -86,24 +119,23 @@ function newContainer(title, message) {
 // wait for the DOMContentLoaded to be finished,
 // then insert the containers into HTML
 // and add eventlisteners
-document.addEventListener("DOMContentLoaded", function(event) {
-    titles = [];
-    posts = firebase.database().ref('posts');
-    posts.on("value", function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            var title = childSnapshot.key;
-            if(!titles.includes(title)){
+document.addEventListener("DOMContentLoaded", function (event) {
+    posts = firebase.database().ref('posts/');
+    posts.on("value", function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var pid = childSnapshot.key;
+            if (!ids.includes(pid)) {
                 var childData = childSnapshot.val();
+                var title = childData.title;
                 var message = childData.message;
-                newContainer(title, message);
-                titles.push(title);
+                newContainer(title, message, pid);
+                ids.push(pid);
             }
         });
     });
-    document.getElementById("add").addEventListener("click", function() {
+    document.getElementById("add").addEventListener("click", function () {
         var newTitle = "New";
         var newMessage = "New Message";
         newContainer(newTitle, newMessage);
-        titles.push(newTitle);
     });
 });
